@@ -3,8 +3,8 @@ const webpack = require('webpack');
 
 const WebpackBar = require('webpackbar');
 
-const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// const TerserPlugin = require('terser-webpack-plugin');
+// const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin');
 
 const CopyPlugin = require('copy-webpack-plugin');
@@ -214,35 +214,29 @@ module.exports = {
     hints: false
   },
 
+  // webpack runs default optimizations depending on chosen mode (prod/dev)
+  // https://webpack.js.org/configuration/optimization/
+  // >>>>>>>>> override the below default optimizations <<<<<<<<<<<<
   optimization: {
+    minimize: true, // tell webpack to minimize bundle using 'TerserPlugin' defaults
+    // override selected defaults enabling 'minimizer'
+    // >>>>>>>>>> need to review all defaults <<<<<<<<<<
+    // https://github.com/terser/terser#minify-options
+    // https://github.com/terser/terser#output-options
     // minimizer: [
-    //   // minify javascript 
     //   new TerserPlugin({
+    //     extractComments: false,
     //     terserOptions: {
+    //       mangle: false,
     //       output: {
+    //         beautify: false,
     //         comments: false,
     //       },
-    //       // mangle: true,
     //     },
-    //     //extractComments: false,
-    //     cache: true,
-    //     parallel: true,
-    //     sourceMap: true
     //   }),
-    //   // minify css (default: cssnano)
-    //   // preset:[] : cssnanoOpts
-    //   // map:{} :    postcssOpts
-    //   new OptimizeCSSAssetsPlugin({
-    //     cssProcessorOptions: {
-    //       preset: ['default', { discardComments: { removeAll: true } }],
-    //       map: { 
-    //         inline: false, 
-    //         annotation: true
-    //       }
-    //     }
-    //   })
     // ],
     // Code Splitting: Prevent Duplication: Use the SplitChunksPlugin to dedupe and split chunks!
+    // https://webpack.js.org/plugins/split-chunks-plugin/
     // react-hot-loader | react-redux | react-router-dom | react-router
     splitChunks: {
       cacheGroups: {
@@ -288,6 +282,14 @@ module.exports = {
       // cssModules: true
     }),
 
+    // https://github.com/NMFR/optimize-css-assets-webpack-plugin
+    // new OptimizeCssAssetsPlugin({
+    //   assetNameRegExp: /\.css$/g,
+    //   cssProcessor: require('cssnano'),
+    //   cssProcessorOptions: { discardComments: { removeAll: true } },
+    //   canPrint: true, // can plugin print messages to the console, default: true
+    // }),
+
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
 
@@ -304,19 +306,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'src/pwa.js',
-      // showErrors: true,
-      // minify: {
-      //   removeComments: true,
-      //   collapseWhitespace: true,
-      //   removeRedundantAttributes: true,
-      //   useShortDoctype: true,
-      //   removeEmptyAttributes: true,
-      //   removeStyleLinkTypeAttributes: true,
-      //   keepClosingSlash: true,
-      //   minifyJS: true,
-      //   minifyCSS: true,
-      //   minifyURLs: true,
-      // },
     }),
 
     // https://webpack.js.org/plugins/provide-plugin/
@@ -345,7 +334,6 @@ module.exports = {
     }),
 
     new webpack.HashedModuleIdsPlugin(),
-
 
     // globDirectory: base directory to match globPatterns against, relative to the current working directory
     // [maximumFileSizeToCacheInBytes] will not have any effect, it only modifies files matched by 'globPatterns'
@@ -385,8 +373,8 @@ module.exports = {
       swDest: path.join(buildPath, 'service-worker.js'),
       clientsClaim: true,
       skipWaiting: true,
-      importWorkboxFrom: 'local',
-      // importWorkboxFrom: 'cdn',
+      // importWorkboxFrom: 'local',
+      importWorkboxFrom: 'cdn',
       navigateFallback: '/dist/index.html',
       // // Exempt all URLs that start with /_ or contain admin anywhere:
       // navigateFallbackBlacklist: [/^\/_/, /admin/],

@@ -4,7 +4,7 @@
 
 This app runs runs locally.
 
-This app has all fonts and all components. The dev build is removed.
+This app has all fonts and almost all components. The dev build is removed.
 
 You might notice I add comments to code. I figured I would include some for context. 
 
