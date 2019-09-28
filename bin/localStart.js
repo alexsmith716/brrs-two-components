@@ -1,9 +1,17 @@
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const http = require('http');
-const fs = require('fs');
+// const https = require('https');
+const morgan = require('morgan');
 const favicon = require('serve-favicon');
 const webpack = require('webpack');
+
+console.log('>>>>>>>>>>>>>>>>> START > __CLIENT__ ?: ', __CLIENT__);
+console.log('>>>>>>>>>>>>>>>>> START > __SERVER__ ?: ', __SERVER__);
+console.log('>>>>>>>>>>>>>>>>> START > __DEVELOPMENT__ ?: ', __DEVELOPMENT__);
+console.log('>>>>>>>>>>>>>>>>> START > __DISABLE_SSR__ ?: ', __DISABLE_SSR__);
+console.log('>>>>>>>>>>>>>>>>> START > __DLLS__ ?: ', __DLLS__);
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 8080;
@@ -21,10 +29,21 @@ process.on('rejectionHandled', promise => {
   unhandledRejections.delete(promise);
 });
 
+// https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener
+// https://nodejs.org/api/all.html#tls_tls_createserver_options_secureconnectionlistener
+// const httpsOptions = {
+//   key: fs.readFileSync(path.join(__dirname, '../ssl/localhost.key')),
+//   cert: fs.readFileSync(path.join(__dirname, '../ssl/localhost.crt')),
+//   requestCert: false,
+//   rejectUnauthorized: false
+// };
+
 const app = express();
 const server = http.createServer(app);
+// const server = https.createServer(httpsOptions, app);
 
 app.set('port', port);
+app.use(morgan('dev'));
 
 app.use(favicon(path.join(__dirname, '..', 'build', 'favicon.ico')));
 
