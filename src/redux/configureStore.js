@@ -4,9 +4,9 @@ import { createPersistoid, persistCombineReducers, REGISTER } from 'redux-persis
 import clientMiddleware from './clientMiddleware';
 import createRootReducer from './reducer';
 
-// 'reduceRight()' works just like 'reduce()', 
-// except that it processes the array from highest index to lowest (right-to-left), 
-// rather than from lowest to highest. 
+// 'reduceRight()' works just like 'reduce()',
+// except that it processes the array from highest index to lowest (right-to-left),
+// rather than from lowest to highest.
 // You might want to do this if the reduction operation has right-to-left precedence
 
 // ----------------------------------------------------------------------

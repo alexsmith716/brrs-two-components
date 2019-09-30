@@ -44,7 +44,6 @@ const generatedIdent = (name, localName, lr) => {
 module.exports = {
 
   context: path.resolve(__dirname, '..'),
-  // the home directory for webpack
   // the entry and module.rules.loader option is resolved relative to this directory
   name: 'client',
   target: 'web',
